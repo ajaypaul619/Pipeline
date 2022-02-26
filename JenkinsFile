@@ -1,37 +1,18 @@
 pipeline {
-	agent {
-	    label 'Windows_agent'
-	}
-	stages{
-		stage('Git checkout'){
-		steps{
-			echo "checking out from git";
-			git credentialsId: '9bfc7742-a518-4ec2-8e81-25d17149f03b', url: 'https://github.com/ajaypaul619/Pipeline.git'
-		}
-		}
-		stage('Build'){
-		steps{
-		echo "Building...";
-     	bat 'Build.bat'
-		}
-		}
-		
-		stage('Run test'){
-		parallel{
-		stage('Task 1 on windows'){
-		agent{
-		label "Windows_agent}}
-		stage('Test on master'){
-		agent{
-		label "master"
-		}
-		steps{
-		echo"Task1 on master}
-		}
-		}
-		}
-		
-	
-	}
-	
+    agent none
+    stages{
+        stage('Run tests parallely'){
+            parallel{
+                stage('Test on windows'){
+                    agent{
+                        label 'Windows_agent'
+                    }
+                    steps{
+                        echo 'Task 1 on windows'
+                    }
+                }
+        
+            }
+        }
+    }
 }
